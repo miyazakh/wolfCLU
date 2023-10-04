@@ -2044,7 +2044,7 @@ int checkStdin(void)
     if (select(1, &readfds, NULL, NULL, &timeout)){
         stop = 1;
     }
-
+fprintf(stderr, "stop %d\n", stop);
     return stop;
 
 }

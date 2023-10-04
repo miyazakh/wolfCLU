@@ -19,6 +19,7 @@ rm -f $READYFILE
 ./wolfssl s_server -port 11111 -key ./certs/server-key.pem\
     -cert ./certs/server-cert.pem -noVerify -readyFile $READYFILE &
 pid_server=$!
+echo server pid ${pid_server}
 
 counter=0
 # If readyfile exists, the server is considered ready.
@@ -36,9 +37,10 @@ if [ "$counter" -eq 100 ]; then
 fi
 
 echo `ps | grep wolfssl`
-./wolfssl s_client -connect 127.0.0.1:11111 -CAfile ./certs/ca-cert.pem
+./wolfssl s_client -connect 127.0.0.1:11111 -CAfile ./certs/ca-cert.pem -verify_return_error
 if [ $? != 0 ] ; then
     echo "test communication failed."
+    echo $?
     exit 99
 fi
 
